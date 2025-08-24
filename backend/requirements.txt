@@ -1,0 +1,12 @@
+fastapi[all]
+uvicorn[standard]
+python-multipart
+sqlalchemy
+psycopg2-binary
+passlib[bcrypt]
+bcrypt
+pyjwt
+pydantic
+reportLab
+dotenv
+alembic
