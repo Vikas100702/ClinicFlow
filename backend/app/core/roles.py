@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, status
-from app.core.dependency import get_current_user
+from core.dependency import get_current_user
 
 def role_checker(*allowed_roles: str):
     def wrapper(current_user: dict = Depends(get_current_user)):

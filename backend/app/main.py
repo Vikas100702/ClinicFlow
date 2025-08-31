@@ -1,22 +1,58 @@
 from typing import List
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from passlib.hash import bcrypt
-from app.database.database import get_db, Base
-from app.models import UserModel, DoctorModel, PatientModel
-from app.schemas import UserLoginSchema, TokenResponseSchema
-from app.core.security import verify_password
-from app.core.jwt import create_access_token
-from app.core.dependency import decode_access_token, get_current_user
-from app.core.roles import role_checker
+from database.database import get_db, Base
+from models import UserModel, DoctorModel, PatientModel
+from schemas import UserLoginSchema, TokenResponseSchema
+from core.security import hash_password, verify_password
+from core.jwt import create_access_token
+from core.dependency import decode_access_token, get_current_user
+from core.roles import role_checker
 
-from app.schemas import (
+from routes import (
+    appointments, doctor_availability, dashboard, forgot_password,
+    prescriptions, lab_orders
+)
+
+from routes.cmh import (
+    allergies, conditions, medication, immunization, 
+    procedures, encounter_notes, medical_doc, vitals,
+    summary
+)
+
+from schemas import (
     UserCreateSchema, UserResponseSchema,
     DoctorCreateSchema, DoctorResponseSchema,
     PatientCreateSchema, PatientResponseSchema
 )
 
 app = FastAPI(title="ClinicFlow APP", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)  
+
+app.include_router(appointments.router)
+app.include_router(doctor_availability.router)
+app.include_router(dashboard.router)
+app.include_router(forgot_password.router)
+app.include_router(prescriptions.router)
+app.include_router(lab_orders.router)
+app.include_router(allergies.router)
+app.include_router(conditions.router)
+app.include_router(medication.router)
+app.include_router(immunization.router)
+app.include_router(procedures.router)
+app.include_router(encounter_notes.router)
+app.include_router(medical_doc.router)
+app.include_router(vitals.router)
+app.include_router(summary.router)
 
 # User Registration
 @app.post("/register/user", response_model=UserResponseSchema)
@@ -25,7 +61,7 @@ def register_user(user: UserCreateSchema, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    hashed_password = bcrypt.hash(user.password)
+    hashed_password = hash_password(user.password)
 
     new_user = UserModel(
         first_name=user.first_name,
@@ -100,13 +136,13 @@ def login(login_data: UserLoginSchema, db: Session = Depends(get_db)):
     if not verify_password(login_data.password, user.password_hash):
         raise HTTPException(
             status_code = status.HTTP_401_UNAUTHORIZED,
-            detail = "Invalid email or password",
+            detail = "Invalid password",
         )
 
     # Create JWT token
     access_token = create_access_token(
         data = {
-            "sub": user.email,
+            "sub": str(user.user_id),
             "role": user.role
         }
     )
@@ -118,15 +154,3 @@ def protected_route(current_user: dict = Depends(get_current_user)):
     return {
         "message": f"Hello, {current_user['sub']}! Your role is {current_user['role']}."
     }
-
-# for doctors only
-@app.get("/doctor/dashboard")
-def doctor_dashboard(current_user: dict = Depends(role_checker("doctor"))):
-    return {
-        "message": f"Welcome Dr. {current_user['sub']}"
-    }
-
-# for patient only
-@app.get("/patient/dashboard")
-def patient_dashboard(current_user: dict = Depends(role_checker("patient"))):
-    return {"msg": f"Welcome Patient {current_user['sub']}"}

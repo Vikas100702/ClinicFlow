@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from .user_role_model import UserModel
 from .patient_model import PatientModel
 from .doctor_model import DoctorModel
+from .appointment_model import AppointmentModel
 
 #Export Everything
 __all__ = [

@@ -1,4 +1,4 @@
-from app.models.models import Base, Column, Integer, String, ForeignKey, relationship
+from models.models import Base, Column, Integer, String, ForeignKey, relationship
 
 
 class DoctorModel(Base):
@@ -13,4 +13,15 @@ class DoctorModel(Base):
     bio = Column(String(255), nullable=True)
     available_days = Column(String(100), nullable=True)
 
+    # relationships
     user = relationship("UserModel", backref="doctor_profile")
+    appointments = relationship("AppointmentModel", back_populates = "doctor", cascade = "all, delete-orphan")
+    availability = relationship("DoctorAvailabilityModel", back_populates = "doctor", cascade = "all, delete-orphan")
+    prescription = relationship("PrescriptionModel", back_populates = "doctor")
+    allergies = relationship("MedicalAllergyModel", back_populates="doctor", cascade="all, delete-orphan")
+    conditions = relationship("MedicalConditionModel", back_populates="doctor")
+    medications = relationship("MedicationStatementModel", back_populates="doctor")
+    immunizations = relationship("ImmunizationModel", back_populates="doctor")
+    procedures = relationship("ProcedureModel", back_populates="doctor")
+    encounter_notes = relationship("EncounterNoteModel", back_populates="doctor")
+    vitals = relationship("VitalSnapshotModel", back_populates="doctor", cascade="all, delete-orphan")

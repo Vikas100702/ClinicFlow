@@ -7,14 +7,36 @@ from sqlalchemy import pool
 from alembic import context
 
 from database.database import Base
-from models import user_role_model, patient_model, doctor_model
 from dotenv import load_dotenv
+from models import (
+    user_role_model, patient_model, doctor_model, 
+    appointment_model, doctor_availability_model,
+    prescription_model, lab_order_model
+)
+
+from models.cmh import (
+    cmh_allergy_model, medical_condition_model, medication_model,
+    immunization_model, procedure_model, encounter_note_model,
+    medical_doc_model, vital_snapshot_model
+)
 
 load_dotenv()
 
 User = user_role_model.UserModel
 Doctor = doctor_model.DoctorModel
 Patient = patient_model.PatientModel
+Appointment = appointment_model.AppointmentModel
+Doctor_Availability = doctor_availability_model.DoctorAvailabilityModel
+Prescription = prescription_model.PrescriptionModel
+Lab_Order = lab_order_model.LabOrederModel
+CMH_Allergy = cmh_allergy_model.MedicalAllergyModel
+Medical_Condition = medical_condition_model.MedicalConditionModel
+Medication_Statement = medication_model.MedicationStatementModel
+Immunization = immunization_model.ImmunizationModel
+Procedure = procedure_model.ProcedureModel
+Vital_Snapshot = vital_snapshot_model.VitalSnapshotModel
+Encounter_Notes = encounter_note_model.EncounterNoteModel
+Medical_Doc = medical_doc_model.MedicalDocumentModel
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -22,8 +44,6 @@ config = context.config
 
 DATABASE_URL = os.getenv('DB_URL')
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
-
-
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

@@ -1,4 +1,4 @@
-from app.models.models import Base, Column, Integer, String, ForeignKey, relationship
+from models.models import Base, Column, Integer, String, ForeignKey, relationship
 
 
 class PatientModel(Base):
@@ -9,4 +9,14 @@ class PatientModel(Base):
 
     address = Column(String(255), nullable=True)
 
+    # relationships
     user = relationship("UserModel", backref="patient_profile")
+    appointments = relationship("AppointmentModel", back_populates = "patient", cascade = "all, delete-orphan")
+    prescription = relationship("PrescriptionModel", back_populates = "patient")
+    allergies = relationship("MedicalAllergyModel", back_populates="patient", cascade="all, delete-orphan")
+    conditions = relationship("MedicalConditionModel", back_populates="patient")
+    medications = relationship("MedicationStatementModel", back_populates="patient")
+    immunizations = relationship("ImmunizationModel", back_populates="patient")
+    procedures = relationship("ProcedureModel", back_populates="patient")
+    encounter_notes = relationship("EncounterNoteModel", back_populates="patient")
+    vitals = relationship("VitalSnapshotModel", back_populates="patient", cascade="all, delete-orphan")

@@ -1,9 +1,10 @@
+from fastapi import HTTPException, status
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 import jwt
-from app.core.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+from core.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     """Create JWT access token"""
     to_encode = data.copy()
 
@@ -18,9 +19,15 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 def decode_access_token(token: str) -> str:
     """JWT verify + Decode"""
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithm = [ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms = [ALGORITHM])
         return payload
     except jwt.ExpiredSignatureError:
-        raise ValueError("Token Expires")
+        raise HTTPException(
+            status_code = status.HTTP_401_UNAUTHORIZED,
+            detail = "Token expired"
+        )
     except jwt.InvalidTokenError:
-        raise ValueError("Invalid Token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token"
+        )

@@ -1,4 +1,4 @@
-from app.models.models import Base, Column, Integer, String, Enum, DateTime, datetime, timezone, enum
+from models.models import Base, Column, Integer, String, Enum, DateTime, datetime, timezone, enum
 
 
 class GenderEnum(str, enum.Enum):
@@ -24,4 +24,3 @@ class UserModel(Base):
 
     password_hash = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
-
