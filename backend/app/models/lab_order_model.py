@@ -1,12 +1,14 @@
-from models.models import Column, Integer, String, Enum, ForeignKey, enum, DateTime, relationship, datetime, timezone, Base
-
+from lib.lib_import import (
+    Column, Integer, String, Enum, ForeignKey, 
+    enum, DateTime, relationship, datetime, timezone, Base
+)
 
 class LabOrderStatusEnum(enum.Enum):
     ORDERED = "ordered"
     SAMPLE_COLLECTED = "sample_collected"
     COMPLETED = "completed"
 
-class LabOrederModel(Base):
+class LabOrderModel(Base):
     __tablename__ = "lab_orders"
 
     lab_order_id = Column(Integer, primary_key = True, index = True, autoincrement = True)
@@ -18,4 +20,4 @@ class LabOrederModel(Base):
     created_at = Column(DateTime, default = lambda: datetime.now(timezone.utc))
 
     # relationships
-    appointment = relationship("AppointmentModel", back_populates = "lab_orders")
+    appointment = relationship("AppointmentModel", back_populates = "lab_order")

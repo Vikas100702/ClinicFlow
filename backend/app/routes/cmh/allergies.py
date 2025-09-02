@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, List, status, get_db,
+)
 from models.cmh.cmh_allergy_model import MedicalAllergyModel
-from schemas import AllergyCreateSchema, AllergyResponseSchema
-from typing import List
+from schema.cmh.allergy_schema import AllergyCreateSchema, AllergyResponseSchema
 
 router = APIRouter(prefix = "/allergies", tags = ["Allergies"])
 

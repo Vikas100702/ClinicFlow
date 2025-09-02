@@ -1,4 +1,4 @@
-from models.models import (
+from lib.lib_import import (
     Base, Column, Integer, String, Enum, DateTime,
     ForeignKey, Boolean, relationship, datetime, timezone, enum
 )
@@ -25,5 +25,5 @@ class ProcedureModel(Base):
     is_active = Column(Boolean, default=True)
 
     # relationships
-    patient = relationship("UserModel", back_populates="procedures")
+    patient = relationship("PatientModel", back_populates="procedures")
     doctor = relationship("DoctorModel", back_populates="procedures")

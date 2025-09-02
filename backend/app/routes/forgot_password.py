@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, status, get_db,
+    create_access_token, decode_access_token, hash_password,
+    verify_password, timedelta
+)
 from models.user_role_model import UserModel
-from core.jwt import create_access_token, decode_access_token
-from core.security import hash_password, verify_password
-from datetime import timedelta
 
 router = APIRouter(prefix = "/forgot_password", tags = ["Forgot Password"])
 
@@ -57,7 +56,7 @@ def reset_password(token: str, new_password: str, db: Session = Depends(get_db))
                 detail="User not found"
             )
 
-        # Password update karo
+        # update password
         user.password = hash_password(new_password)
         db.commit()
         return {"message": "Password reset successful"}

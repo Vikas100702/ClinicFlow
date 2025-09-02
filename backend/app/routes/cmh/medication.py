@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from typing import List
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, List, status, get_db
+)
 from models.cmh.medication_model import MedicationStatementModel
-from schemas import MedicationCreateSchema, MedicationResponseSchema
+from schema.cmh.medication_schema import MedicationCreateSchema, MedicationResponseSchema
 
 router = APIRouter(prefix="/medications", tags=["Medications"])
 

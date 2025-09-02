@@ -1,4 +1,4 @@
-from models.models import (
+from lib.lib_import import (
     Base, Column, Integer, String, Enum, DateTime, enum,
     ForeignKey, Boolean, relationship, datetime, timezone
 )
@@ -24,4 +24,4 @@ class MedicalConditionModel(Base):
 
     # relationships
     patient = relationship("PatientModel", back_populates = "conditions")
-    patient = relationship("DoctorModel", back_populates = "conditions")
+    doctor = relationship("DoctorModel", back_populates = "conditions")

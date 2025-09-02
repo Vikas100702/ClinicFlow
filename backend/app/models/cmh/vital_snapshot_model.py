@@ -1,6 +1,6 @@
-from models.models import (
-    Base, Column, Integer, String, DateTime, validates,
-    ForeignKey, Boolean, Float, relationship, datetime, timezone
+from lib.lib_import import (
+    Base, Column, Integer, String, Float, DateTime, validates,
+    ForeignKey, Boolean, relationship, datetime, timezone
 )
 
 class VitalSnapshotModel(Base):

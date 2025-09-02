@@ -1,18 +1,6 @@
-from models.models import (
-    Column, 
-    BigInteger, 
-    String, 
-    Enum, 
-    ForeignKey, 
-    relationship,
-    CheckConstraint,
-    UniqueConstraint,
-    func,
-    Base,
-    enum,
-    DateTime,
-    datetime,
-    timezone
+from lib.lib_import import (
+    Column, BigInteger, String, Enum, ForeignKey, relationship, CheckConstraint,
+    UniqueConstraint, func, Base, enum, DateTime, datetime, timezone
 )
 
 class AppointmentStatus(str, enum.Enum):
@@ -39,8 +27,8 @@ class AppointmentModel(Base):
     # Relationships
     patient = relationship("PatientModel", back_populates = "appointments")
     doctor = relationship("DoctorModel", back_populates = "appointments")
-    prescription = relationship("PrescriptionModel", back_populates = "appointments")
-    lab_orders = relationship("LabOrderModel", back_populates = "appointments")
+    prescription = relationship("PrescriptionModel", back_populates = "appointment")
+    lab_order = relationship("LabOrderModel", back_populates = "appointment")
 
     __table_args__ = (
         CheckConstraint("end_time > start_time", name = "check_time_range"),

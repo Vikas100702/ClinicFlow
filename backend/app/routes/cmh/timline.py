@@ -1,9 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
-from typing import Optional, List
-from database.database import get_db
-from datetime import datetime
-
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Query, Session, Optional, List, get_db, datetime,
+)
 from models.cmh.cmh_allergy_model import MedicalAllergyModel
 from models.cmh.medical_condition_model import MedicalConditionModel
 from models.cmh.medication_model import MedicationStatementModel
@@ -13,11 +10,9 @@ from models.cmh.vital_snapshot_model import VitalSnapshotModel
 from models.cmh.medical_doc_model import MedicalDocumentModel
 from models.cmh.encounter_note_model import EncounterNoteModel
 from models.patient_model import PatientModel
-
-from schemas import TimelineResponseSchema, TimelineEntrySchema
+from schema.cmh.timeline_schema import TimelineResponseSchema, TimelineEntrySchema
 
 router = APIRouter(prefix="/cmh", tags=["CMH Timeline"])
-
 
 @router.get("/{patient_id}/timeline", response_model=TimelineResponseSchema)
 def get_patient_timeline(

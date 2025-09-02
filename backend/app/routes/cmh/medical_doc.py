@@ -1,20 +1,14 @@
-import os
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
-from sqlalchemy.orm import Session
-from database.database import get_db
-from models.cmh.medical_doc_model import MedicalDocumentModel
-from schemas import (
-    MedicalDocumentCreateSchema,
-    MedicalDocumentResponseSchema
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, UploadFile, File, 
+    List, status, os, uuid4, get_db, Session
 )
-from typing import List
-from uuid import uuid4
+from models.cmh.medical_doc_model import MedicalDocumentModel
+from schema.cmh.medical_doc_schema import MedicalDocumentResponseSchema
 
 UPLOAD_DIR = "uploads/documents"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 router = APIRouter(prefix="/documents", tags=["Medical Documents"])
-
 
 # upload document
 @router.post("/", response_model=MedicalDocumentResponseSchema)
@@ -45,12 +39,10 @@ async def upload_document(
     db.refresh(new_doc)
     return new_doc
 
-
 # get all documents
 @router.get("/", response_model=List[MedicalDocumentResponseSchema])
 def get_all_documents(db: Session = Depends(get_db)):
     return db.query(MedicalDocumentModel).all()
-
 
 # get document by id
 @router.get("/{document_id}", response_model=MedicalDocumentResponseSchema)
@@ -62,7 +54,6 @@ def get_document(document_id: int, db: Session = Depends(get_db)):
             detail = "Document not found"
         )
     return doc
-
 
 # soft delete
 @router.delete("/{document_id}")

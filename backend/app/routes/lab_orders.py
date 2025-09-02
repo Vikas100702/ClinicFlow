@@ -1,11 +1,9 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status
-from sqlalchemy.orm import Session
-from database.database import get_db
-from models.lab_order_model import LabOrederModel, LabOrderStatusEnum
-from schemas import LaborderCreateSchema, LabOrderResponseSchema
-from core.roles import role_checker
-from typing import List
-import uuid, os
+from lib.lib_import import (
+    APIRouter, Session, Depends, UploadFile, File, HTTPException, 
+    status, get_db, role_checker, List, os, uuid
+)
+from models.lab_order_model import LabOrderModel, LabOrderStatusEnum
+from schema.lab_order_schema import LaborderCreateSchema, LabOrderResponseSchema
 
 router = APIRouter(prefix = "/lab-orders", tags = ["Lab Orders"])
 
@@ -15,7 +13,7 @@ os.makedirs(UPLOAD_DIR, exist_ok = True)
 
 @router.post("/", response_model = LabOrderResponseSchema, dependencies = [Depends(role_checker("DOCTOR"))])
 def create_lab_order(lab_order: LaborderCreateSchema, db: Session = Depends(get_db)):
-    new_order = LabOrederModel(**lab_order.model_dump())
+    new_order = LabOrderModel(**lab_order.model_dump())
 
     db.add(new_order)
     db.commit()
@@ -26,13 +24,13 @@ def create_lab_order(lab_order: LaborderCreateSchema, db: Session = Depends(get_
 
 @router.get("/", response_model = List[LabOrderResponseSchema])
 def list_lab_orders(patient_id: int, db: Session = Depends(get_db)):
-    return db.query(LabOrederModel).join(LabOrederModel.appointment)\
-            .filter(LabOrederModel.appointment.has(patient_id = patient_id)\
+    return db.query(LabOrderModel).join(LabOrderModel.appointment)\
+            .filter(LabOrderModel.appointment.has(patient_id = patient_id)\
         ).all()
 
 @router.post("{id}/upload", response_model = LabOrderResponseSchema, dependencies = [Depends(role_checker("ADMIN"))])
 def upload_result(lab_order_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    lab_order = db.query(LabOrederModel).filter(LabOrederModel.lab_order_id == lab_order_id).first()
+    lab_order = db.query(LabOrderModel).filter(LabOrderModel.lab_order_id == lab_order_id).first()
 
     if not lab_order:
         raise HTTPException(

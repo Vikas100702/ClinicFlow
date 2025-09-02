@@ -1,16 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from database.database import get_db
-from models.cmh.encounter_note_model import EncounterNoteModel
-from schemas import (
-    EncounterNoteCreateSchema,
-    EncounterNoteUpdateSchema,
-    EncounterNoteResponseSchema
+from lib.lib_import import APIRouter, Depends, HTTPException, Session, List, get_db
+from schema.cmh.encounter_note_schema import (
+    EncounterNoteCreateSchema, EncounterNoteResponseSchema, EncounterNoteUpdateSchema
 )
-from typing import List
+from models.cmh.encounter_note_model import EncounterNoteModel
 
 router = APIRouter(prefix="/encounter-notes", tags=["Encounter Notes"])
-
 
 # create
 @router.post("/", response_model=EncounterNoteResponseSchema)
@@ -21,12 +15,10 @@ def create_note(note: EncounterNoteCreateSchema, db: Session = Depends(get_db)):
     db.refresh(new_note)
     return new_note
 
-
 # get all notes
 @router.get("/", response_model=List[EncounterNoteResponseSchema])
 def get_all_notes(db: Session = Depends(get_db)):
     return db.query(EncounterNoteModel).all()
-
 
 # get note by id
 @router.get("/{note_id}", response_model=EncounterNoteResponseSchema)
@@ -35,7 +27,6 @@ def get_note(note_id: int, db: Session = Depends(get_db)):
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
     return note
-
 
 # update
 @router.put("/{note_id}", response_model=EncounterNoteResponseSchema)
@@ -54,7 +45,6 @@ def update_note(
     db.commit()
     db.refresh(note)
     return note
-
 
 # soft delete
 @router.delete("/{note_id}")

@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from sqlalchemy.sql import func
-from typing import List
-
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, List, func, get_db,
+)
 from models.doctor_availability_model import DoctorAvailabilityModel
-from schemas import DoctorAvailabilityCreateSchema, DoctorAvailabilityResponseSchema
+from schema.doctor_availability_schema import (
+    DoctorAvailabilityCreateSchema, DoctorAvailabilityResponseSchema
+)
 
 router = APIRouter(prefix = "/availability", tags = ["Doctor Availability"])
 

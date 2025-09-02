@@ -1,5 +1,7 @@
-from models.models import Base, Column, Integer, String, Enum, DateTime, datetime, timezone, enum
-
+from lib.lib_import import (
+    Base, Column, Integer, String, Enum, DateTime, 
+    datetime, timezone, enum
+)
 
 class GenderEnum(str, enum.Enum):
     MALE = "MALE"
@@ -19,7 +21,7 @@ class UserModel(Base):
     last_name = Column(String(50), nullable=False)
     gender = Column(Enum(GenderEnum), nullable=False)
     email = Column(String(100), unique=True, nullable=False, index=True)
-    phone_number = Column(String(10), unique=True, nullable=False)
+    phone_number = Column(String(10), nullable=False)
     role = Column(Enum(RoleEnum), nullable=False)
 
     password_hash = Column(String(255), nullable=False)

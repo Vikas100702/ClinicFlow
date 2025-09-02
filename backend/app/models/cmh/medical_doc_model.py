@@ -1,8 +1,7 @@
-from models.models import (
+from lib.lib_import import (
     Base, Column, Integer, String, DateTime,
     ForeignKey, Boolean, relationship, datetime, timezone
 )
-
 
 class MedicalDocumentModel(Base):
     __tablename__ = "medical_documents"

@@ -1,18 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from database.database import get_db
-
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, get_db, status
+)
+from models.patient_model import PatientModel
 from models.cmh.cmh_allergy_model import MedicalAllergyModel
 from models.cmh.medical_condition_model import MedicalConditionModel
 from models.cmh.medication_model import MedicationStatementModel
 from models.cmh.immunization_model import ImmunizationModel
 from models.cmh.procedure_model import ProcedureModel
+from models.cmh.encounter_note_model import EncounterNoteModel
 from models.cmh.vital_snapshot_model import VitalSnapshotModel
 from models.cmh.medical_doc_model import MedicalDocumentModel
-from models.cmh.encounter_note_model import EncounterNoteModel
-from models.patient_model import PatientModel
-from models.user_role_model import UserModel
-
 from schema.cmh.cmh_summary_schema import CMHSummarySchema
 
 router = APIRouter(prefix = "/cmh", tags = ["CMH Summary"])

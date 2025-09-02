@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from typing import List
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, List, status, get_db,
+)
 from models.cmh.vital_snapshot_model import VitalSnapshotModel
-from schemas import VitalCreateSchema, VitalResponseSchema
+from schema.cmh.vital_snapshot_schema import VitalCreateSchema, VitalResponseSchema
 
 router = APIRouter(prefix="/vitals", tags=["Vitals"])
 
@@ -45,8 +44,6 @@ def get_vitals_for_patient(patient_id: int, db: Session = Depends(get_db)):
         VitalSnapshotModel.patient_id == patient_id,
         VitalSnapshotModel.is_active == True
     ).order_by(VitalSnapshotModel.recorded_at.desc()).all()
-
-
 
 # Update
 @router.put("/{vital_id}", response_model=VitalResponseSchema)

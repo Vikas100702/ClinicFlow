@@ -1,15 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from typing import List
-
-from database.database import get_db
-from models.cmh.immunization_model import ImmunizationModel
-
-from schemas import (
-    ImmunizationCreateSchema,
-    ImmunizationUpdateSchema,
-    ImmunizationResponseSchema
+from lib.lib_import import (
+    APIRouter, Depends, HTTPException, Session, List, status, get_db
 )
+from models.cmh.immunization_model import ImmunizationModel
+from schema.cmh.immunization_schema import ImmunizationCreateSchema, ImmunizationResponseSchema
 
 router = APIRouter(prefix="/immunizations", tags=["Immunizations"])
 

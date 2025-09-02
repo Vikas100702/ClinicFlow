@@ -1,7 +1,12 @@
-from models.models import (
+from lib.lib_import import (
     Base, Column, Integer, String, Enum, DateTime, enum,
     ForeignKey, Boolean, relationship, datetime, timezone
 )
+
+class ImmunizationStatusEnum(str, enum.Enum):
+    completed = "COMPLETED"
+    pending = "PENDING"
+    cancelled = "CANCELLED"
 
 class ImmunizationModel(Base):
     __tablename__ = "immuniztions"

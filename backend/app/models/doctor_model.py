@@ -1,5 +1,4 @@
-from models.models import Base, Column, Integer, String, ForeignKey, relationship
-
+from lib.lib_import import Base, Column, Integer, String, ForeignKey, relationship
 
 class DoctorModel(Base):
     __tablename__ = "doctors"
@@ -20,6 +19,7 @@ class DoctorModel(Base):
     prescription = relationship("PrescriptionModel", back_populates = "doctor")
     allergies = relationship("MedicalAllergyModel", back_populates="doctor", cascade="all, delete-orphan")
     conditions = relationship("MedicalConditionModel", back_populates="doctor")
+    documents = relationship("MedicalDocumentModel", back_populates="doctor", cascade="all, delete-orphan")
     medications = relationship("MedicationStatementModel", back_populates="doctor")
     immunizations = relationship("ImmunizationModel", back_populates="doctor")
     procedures = relationship("ProcedureModel", back_populates="doctor")

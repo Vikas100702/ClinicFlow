@@ -1,13 +1,10 @@
-from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy.orm import Session
-from sqlalchemy.sql import func
-
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, HTTPException, Depends, Session, func, get_current_user, get_db
+)
 from models.user_role_model import UserModel
 from models.patient_model import PatientModel
 from models.doctor_model import DoctorModel
 from models.appointment_model import AppointmentModel
-from core.dependency import get_current_user
 
 router = APIRouter(prefix = "/dashboard", tags = ["Dashboard"])
 

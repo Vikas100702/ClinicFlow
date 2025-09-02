@@ -1,9 +1,4 @@
-import os
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-
+from lib.lib_import import os, create_engine, declarative_base, sessionmaker, load_dotenv
 load_dotenv()
 
 db_user = os.getenv('DB_USERNAME')

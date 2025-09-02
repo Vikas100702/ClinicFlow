@@ -1,4 +1,4 @@
-from models.models import (
+from lib.lib_import import (
     Base, Column, Integer, String, Enum, DateTime, 
     ForeignKey, Boolean, relationship, enum, datetime, timezone
 )

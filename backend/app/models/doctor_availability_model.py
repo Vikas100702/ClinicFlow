@@ -1,15 +1,6 @@
-from models.models import (
-    Column,
-    BigInteger,
-    SmallInteger,
-    Time,
-    Boolean,
-    ForeignKey,
-    DateTime,
-    CheckConstraint,
-    relationship,
-    func,
-    Base
+from lib.lib_import import (
+    Column, BigInteger, SmallInteger, Time, Boolean, ForeignKey, 
+    DateTime, CheckConstraint, relationship, func, Base
 )
 
 class DoctorAvailabilityModel(Base):

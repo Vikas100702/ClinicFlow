@@ -1,5 +1,7 @@
-from models.models import Base, Column, Integer, String, ForeignKey, DateTime, Text, relationship, func
-from database.database import Base
+from lib.lib_import import (
+    Base, Column, Integer, String, ForeignKey,
+    DateTime, Text, relationship, func
+)
 
 class PrescriptionModel(Base):
     __tablename__ = "prescription"
@@ -27,6 +29,6 @@ class PrescriptionModel(Base):
     created_at = Column(DateTime(timezone = True), server_default = func.now())
 
     # Relationships
-    appointment = relationship("AppointmentModel", back_populates = "prescriptions")
-    doctor = relationship("DoctorModel", back_populates = "prescriptions")
-    patient = relationship("PatientModel", back_populates = "prescriptions")
+    appointment = relationship("AppointmentModel", back_populates = "prescription")
+    doctor = relationship("DoctorModel", back_populates = "prescription")
+    patient = relationship("PatientModel", back_populates = "prescription")

@@ -1,8 +1,7 @@
-from models.models import (
+from lib.lib_import import (
     Base, Column, Integer, String, Text, DateTime,
     ForeignKey, Boolean, relationship, datetime, timezone
 )
-
 
 class EncounterNoteModel(Base):
     __tablename__ = "encounter_notes"

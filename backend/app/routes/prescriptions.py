@@ -1,9 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends, status
-from sqlalchemy.orm import Session
-from database.database import get_db
+from lib.lib_import import (
+    APIRouter, HTTPException, Session, Depends, status, get_db, List
+)
 from models.prescription_model import PrescriptionModel
-from schemas import PrescriptionCreateSchema, PrescriptionResponseSchema
-from typing import List
+from schema.prescription_schema import PrescriptionCreateSchema, PrescriptionResponseSchema
 
 router = APIRouter(prefix = "/prescriptions", tags = ["Prescriptions"])
 
