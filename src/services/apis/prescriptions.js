@@ -1,24 +1,24 @@
-// frontend/src/services/apis/prescriptions.js
-import api from "../api"; // axios instance
+import axios from "axios";
 
+const API_URL = "http://localhost:8000"; // Backend root (no /api prefix)
+
+// Prescriptions API Service
 export const prescriptionsAPI = {
-  // Fetch logged-in patient's prescriptions
-  async getMyPrescriptions() {
-    const res = await api.get("/prescriptions/my/");
+  // Create a new prescription
+  create: async (data) => {
+    const res = await axios.post(`${API_URL}/prescriptions/`, data);
     return res.data;
   },
 
-  // Download prescription PDF
-  async downloadPdf(id) {
-    const res = await api.get(`/prescriptions/${id}/pdf/`, {
-      responseType: "blob",
-    });
+  // Get prescriptions by patient ID
+  getByPatient: async (patientId) => {
+    const res = await axios.get(`${API_URL}/prescriptions/patient/${patientId}`);
     return res.data;
   },
 
-  // Create new prescription
-  async create(data) {
-    const res = await api.post("/prescriptions/", data);
+  // Get prescription by prescription ID
+  getById: async (prescriptionId) => {
+    const res = await axios.get(`${API_URL}/prescriptions/${prescriptionId}`);
     return res.data;
   },
 };

@@ -1,98 +1,94 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { authAPI } from '../services/auth'
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { authAPI } from "../services/auth";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
-}
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [token, setToken] = useState(localStorage.getItem('token'))
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
     if (token) {
-      // Verify token and get user info
-      authAPI.getCurrentUser()
-        .then(userData => {
-          setUser(userData)
-          setLoading(false)
+      authAPI
+        .getCurrentUser()
+        .then((data) => {
+          // data.message => "Hello, <user_id>! Your role is <role>."
+          const parsed = parseProtectedMessage(data.message);
+          setUser(parsed);
+          setLoading(false);
         })
         .catch(() => {
-          localStorage.removeItem('token')
-          setToken(null)
-          setUser(null)
-          setLoading(false)
-        })
+          localStorage.removeItem("token");
+          setToken(null);
+          setUser(null);
+          setLoading(false);
+        });
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [token])
+  }, [token]);
 
   const login = async (email, password) => {
     try {
-      const response = await authAPI.login(email, password)
-      const { access_token } = response
-      
-      localStorage.setItem('token', access_token)
-      setToken(access_token)
-      
-      const userData = await authAPI.getCurrentUser()
-      setUser(userData)
-      
-      return { success: true }
+      const { access_token } = await authAPI.login(email, password);
+      localStorage.setItem("token", access_token);
+      setToken(access_token);
+
+      const data = await authAPI.getCurrentUser();
+      const parsed = parseProtectedMessage(data.message);
+      setUser(parsed);
+
+      return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.detail || 'Login failed' 
-      }
+      return {
+        success: false,
+        message: error.response?.data?.detail || "Login failed",
+      };
     }
-  }
+  };
 
   const register = async (userData) => {
     try {
-      const response = await authAPI.register(userData)
-      const { access_token } = response
-      
-      localStorage.setItem('token', access_token)
-      setToken(access_token)
-      
-      const userInfo = await authAPI.getCurrentUser()
-      setUser(userInfo)
-      
-      return { success: true }
+      await authAPI.register(userData);
+      return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.detail || 'Registration failed' 
-      }
+      return {
+        success: false,
+        message: error.response?.data?.detail || "Registration failed",
+      };
     }
-  }
+  };
 
   const logout = () => {
-    localStorage.removeItem('token')
-    setToken(null)
-    setUser(null)
-  }
-
-  const value = {
-    user,
-    login,
-    register,
-    logout,
-    loading,
-    isAuthenticated: !!user
-  }
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        loading,
+        isAuthenticated: !!user,
+      }}
+    >
       {!loading && children}
     </AuthContext.Provider>
-  )
+  );
+};
+
+// Helper: Parse backend "Hello <id>! Your role is <role>."
+function parseProtectedMessage(message) {
+  const match = message.match(/Hello, (\d+)! Your role is (.+)\./);
+  if (match) {
+    return { id: match[1], role: match[2] };
+  }
+  return null;
 }

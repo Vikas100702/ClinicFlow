@@ -1,85 +1,127 @@
-/* Container */
+/* 🌟 Container */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #eef2ff;
-  flex-direction: column;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
   padding: 20px;
 }
 
-/* Title */
-.register-title {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #1e293b;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-/* Form */
+/* 🌟 Card Style Form */
 .register-form {
   background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: 400px;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 420px;
+  transition: transform 0.3s ease;
+  animation: fadeSlideIn 0.6s ease forwards;
 }
 
-/* Form Group */
-.form-group {
-  margin-bottom: 1rem;
+.register-form:hover {
+  transform: translateY(-5px);
 }
 
-.form-group label {
+/* 🌟 Title */
+.register-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.register-title::after {
+  content: "";
   display: block;
-  margin-bottom: 6px;
-  font-weight: 500;
-  color: #475569;
+  width: 60px;
+  height: 3px;
+  background: #6e8efb;
+  margin: 8px auto 0;
+  border-radius: 3px;
+}
+
+/* 🌟 Input + Select Styles */
+.form-group {
+  margin-bottom: 1.2rem;
 }
 
 .form-group input,
-.form-group select,
-.form-group textarea {
+.form-group select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #cbd5e1;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
   border-radius: 8px;
   outline: none;
-  transition: 0.3s;
   font-size: 14px;
-  resize: none;
+  transition: all 0.3s ease;
+  background: #f9fafc;
 }
 
 .form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 4px rgba(79, 70, 229, 0.3);
+.form-group select:focus {
+  border-color: #6e8efb;
+  box-shadow: 0 0 6px rgba(110, 142, 251, 0.4);
+  background: #fff;
 }
 
-/* Error Message */
+/* 🌟 Row for side by side inputs */
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* 🌟 Error Message */
 .error {
-  color: #dc2626;
+  color: #e63946;
   font-size: 13px;
-  margin-top: 4px;
-  display: block;
+  margin-top: 5px;
+  font-weight: 500;
+  animation: shake 0.3s ease;
 }
 
-/* Submit Button */
+/* 🌟 Submit Button */
 .submit-btn {
-  background: #2563eb;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
   color: white;
-  padding: 12px;
+  padding: 14px;
   width: 100%;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-top: 1rem;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .submit-btn:hover {
-  background: #1e40af;
+  background: linear-gradient(135deg, #5a7ffb, #9160e5);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* 🌟 Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeSlideIn 0.6s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
 }

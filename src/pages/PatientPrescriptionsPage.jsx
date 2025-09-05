@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { prescriptionsAPI } from "../services/apis/prescriptions";
+import { prescriptionsAPI } from "../services/apis/prescriptions.js";
 import "../pages/Dashboard/Dashboard.css";
 
 

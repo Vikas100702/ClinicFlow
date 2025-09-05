@@ -65,6 +65,7 @@ const Login = () => {
             placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
+            autoComplete="current-password"
           />
           {errors.password && <p className="error">{errors.password}</p>}
 

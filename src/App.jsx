@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-//import { BrowserRouter as Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Layout/Sidebar.jsx";
 import Login from "./components/Layout/Auth/Login.jsx";
 import ForgotPassword from "./components/Layout/Auth/ForgotPassword.jsx";
@@ -19,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CreatePrescriptionPage from "./pages/CreatePrescriptionPage.jsx";
 import PatientPrescriptionsPage from "./pages/PatientPrescriptionsPage.jsx";
 import PatientLabResultsPage from "./pages/PatientLabResultsPage.jsx";
+import PatientDashboard from "./pages/Dashboard/PatientDashboard.jsx";
 
 
 const PublicLayout = ({ children }) => (
@@ -81,6 +81,16 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/PatientDashboard"
+  element={
+    <ProtectedRoute>
+      <PrivateLayout>
+        <PatientDashboard />
+      </PrivateLayout>
+    </ProtectedRoute>
+  }
+/>
         <Route
           path="/appointments"
           element={
